@@ -1,0 +1,127 @@
+<style>
+	.form-control {
+		font-size:12px;
+	}
+
+	.tag-label {
+		cursor: no-drop;
+	}
+</style>
+<div class="row-fluid">
+	<div class="col-sm-3">
+        <h3>Technologies</h3>
+        <div class="input-group" style="margin-bottom: 5px;">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="text" class="form-control" placeholder="Search" ng-model="searchTechText">
+        </div>
+        <div style="height: 650px; overflow-y: scroll;">
+            <table class="table table-hover">
+                <tr ng-repeat="tech in webTechs | webTechsFilter:searchTechText track by $index">
+                    <td ng-click="selectTech(tech);">
+                        {{tech.name}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <button class="btn btn-default btn-sm col-sm-12" style="margin-top:10px;" ng-click="openNewTech();">Add technology</button>
+        <button class="btn btn-default btn-sm col-sm-12" style="margin-top:10px;" ng-click="displayJSON();">Save JSON</button>
+	</div>
+	<div class="col-sm-9" style="height: 750px; overflow-y: scroll;">
+		<div class="animate-switch-container" ng-switch on="detailsView">
+			<div class="animate-switch" ng-switch-when="rules">
+                <div class="animate-switch-container" ng-switch on="editingMode">
+                    <div class="animate-switch" ng-switch-when="off">
+                        <h2>{{selectedTech.name}}
+                        <button class="btn btn-default btn-xs" ng-click="startEdit();">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            Edit
+                        </button></h2>
+                        <h4>Description</h4>
+                        <p>{{selectedTech.description}}</p>
+                    </div>
+                    <div class="animate-switch" ng-switch-when="on">
+                        <h4 style="margin-top: 20px;">Tech name:</h4>
+                        <input class="form-control" type="text" ng-model="selectedTech.name">
+                        <h4>Description:</h4>
+                        <textarea class="form-control" ng-model="selectedTech.description"></textarea>
+                        <button class="btn btn-success btn-sm" style="margin-top:10px;" ng-click="stopEdit();">Done</button>
+                    </div>
+                </div>
+                <h3>Relationships</h3>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="parentInput">Parent Technologies:</label>
+                        <input id="parentInput" type="hidden" style="width: 400px" ui-select2="select2Options" ng-model="selectedTech.parentTechs">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="childInput">Child Technologies:</label>
+                        <input id="childInput" type="hidden" style="width: 400px" ui-select2="select2Options" ng-model="selectedTech.childTechs">
+                    </div>
+				</div>
+				<h3>Rules</h3>
+				<h4>Document body</h4>
+				<div class="row" ng-repeat="bodyRule in selectedTech.rules.documentBody">
+				  <div class="col-sm-6">
+				    <input type="text" class="form-control" placeholder="Rule" ng-model="bodyRule.rule">
+				  </div>
+				  <div class="col-sm-2">
+				    <input type="text" class="form-control" placeholder="Power" ng-model="bodyRule.power">
+				  </div>
+				  <div class="col-sm-1">
+				  	<label>
+				  		<input type="checkbox" ng-model="bodyRule.required"> Required
+				  	</label>
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-sm-8">
+					<button class="btn btn-default btn-sm col-sm-12" style="margin-top:10px;" ng-click="addBodyRule();"><i class="icon-plus"></i>Add Rule</button>
+				  </div>
+				</div>
+				<h4>HTTP Headers</h4>
+				<div class="row" ng-repeat="headerRule in selectedTech.rules.httpHeaders">
+				  <div class="col-sm-3">
+				    <input type="text" class="form-control" placeholder="Key" ng-model="headerRule.key">
+				  </div>
+				  <div class="col-sm-3">
+				    <input type="text" class="form-control" placeholder="Rule" ng-model="headerRule.rule">
+				  </div>
+				  <div class="col-sm-2">
+				    <input type="text" class="form-control" placeholder="Power" ng-model="headerRule.power">
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-sm-8">
+					<button class="btn btn-default col-sm-12 btn-sm" style="margin-top:10px;" ng-click="addHeaderRule();"><i class="icon-plus"></i>Add Rule</button>
+				  </div>
+				</div>
+				<h4>Paths</h4>
+				<div class="row" ng-repeat="pathRule in selectedTech.rules.additionalPaths">
+				  <div class="col-sm-6">
+				    <input type="text" class="form-control" placeholder="Rule" ng-model="pathRule.rule">
+				  </div>
+				  <div class="col-sm-2">
+				    <input type="text" class="form-control" placeholder="Power" ng-model="pathRule.power">
+				  </div>
+				  <div class="col-sm-1">
+				  	<label>
+				  		<input type="checkbox" ng-model="pathRule.required"> Required
+				  	</label>
+				  </div>
+				</div>
+				<div class="row">
+				  <div class="col-sm-8">
+					<button class="btn btn-default col-sm-12 btn-sm" style="margin-top:10px; margin-bottom:10px;" ng-click="addPathRule();"><i class="icon-plus"></i>Add Rule</button>
+				  </div>
+				</div>
+			</div>
+			<div class="animate-switch" ng-switch-when="json">
+				<h2>Result JSON</h2>
+				<div class="col-sm-1"></div>
+				<div class="col-sm-9">{{webTechs}}</div>
+			</div>
+		</div>
+	</div>
+</div>

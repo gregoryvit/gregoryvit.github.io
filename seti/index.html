@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" ng-app="rulesEditorApp">
+<head>
+  <meta charset="utf-8">
+  <title>Тест по сетям</title>
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+
+  <script src="lib/jquery-1.11.0.min.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-sanitize.js"></script>
+  <script src="lib/bootstrap/ui-bootstrap-tpls-0.9.0.min.js"></script>
+  <script src="lib/d3/d3.min.js" charset="utf-8"></script>
+  <link href="lib/bower_components/select2/select2.css" rel="stylesheet"/>
+  <script src="lib/bower_components/select2/select2.js"></script>
+  <script type="text/javascript" src="lib/bower_components/angular-ui-select2/src/select2.js"></script>
+  <script src="js/main.js"></script>
+
+</head>
+<body>
+    <div class="container-fluid" ng-controller="questions_controller">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-md-offset-3">
+                <h1>{{title}}</h1>
+
+                <p ng-bind-html="body"></p>
+
+                <div class="animate-switch-container" ng-switch="" on="questionType">
+                    <div class="animate-switch" ng-switch-when="choose">
+                        <form role="form">
+                            <div class="form-group" ng-repeat="answer in answers"><label><input name="userAnswers[]" ng-checked="userAnswers.indexOf(answer) &gt; -1" ng-click="toggleSelection(answer)" type="checkbox" value="{{answer}}" /> {{answer}} </label></div>
+                        </form>
+                    </div>
+
+                    <div class="animate-switch" ng-switch-when="write"><input id="input" class="form-control col-sm-10" ng-model="userAnswers[0]" /></div>
+
+                </div>
+            </div>
+            <div class="row">
+                <button id="check_button" class="btn btn-success col-sm-4 col-md-4 col-md-offset-4" ng-click="checkAnswer();" type="button" style="margin-top:10px; margin-bottom:10px;">Дальше</button>
+            </div>
+            <div class="row">
+                <p class="text-center" style="color:gray;">Правильных ответов {{right_answers_cnt}} из {{total_answers_cnt}} ({{right_answers_cnt/total_answers_cnt * 100}}%)</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#input").keyup(function(event){
+            if(event.keyCode == 13){
+                $("#check_button").click();
+            }
+        });
+    </script>
+</body>
+</html>
