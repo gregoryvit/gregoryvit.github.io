@@ -901,18 +901,23 @@ div#notebook {
         <span class="k">if</span> <span class="n">edge</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edges</span> <span class="ow">and</span> <span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
             <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
             
-<span class="k">def</span> <span class="nf">breadth_first_search</span><span class="p">(</span><span class="n">city_from</span><span class="p">,</span> <span class="n">city_to</span><span class="p">,</span> <span class="n">cities</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">breadth_first_search</span><span class="p">(</span><span class="n">city_from</span><span class="p">,</span> <span class="n">city_to</span><span class="p">,</span> <span class="n">cities</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="n">queue</span> <span class="o">=</span> <span class="p">[(</span><span class="n">city_from</span><span class="p">,</span> <span class="p">[</span><span class="n">city_from</span><span class="p">])]</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
         <span class="n">current_city</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="k">print</span> <span class="s">&#39;Выбираем город: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">current_city</span>
                 
         <span class="k">for</span> <span class="n">next_city</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cities</span><span class="p">[</span><span class="n">current_city</span><span class="p">]])</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">next_city</span> <span class="o">==</span> <span class="n">city_to</span><span class="p">:</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">next_city</span><span class="p">]</span>
+                <span class="n">add_path_edge</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">next_city</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="k">print</span> <span class="s">&#39;Ура, пришли в </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">next_city</span>
                 <span class="k">break</span>
-            
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="k">print</span> <span class="s">&#39;Следующий город не целевой, добавляем в очередь: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">next_city</span>
+            <span class="n">add_path_edge</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">next_city</span><span class="p">],</span> <span class="n">edges</span><span class="p">)</span>
             <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">next_city</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">next_city</span><span class="p">]))</span>
         
         <span class="n">add_path_edge</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
@@ -956,225 +961,328 @@ div#notebook {
 <!-- Generated by graphviz version 2.36.0 (20140111.2315)
  -->
 <!-- Title: cities_2 Pages: 1 -->
-<svg width="720pt" height="590pt"
- viewBox="0.00 0.00 720.00 590.31" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(0.89441 0.89441) rotate(0) translate(4 656)">
+<svg width="720pt" height="657pt"
+ viewBox="0.00 0.00 720.00 656.82" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.785668 0.785668) rotate(0) translate(4 832)">
 <title>cities_2</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-656 801,-656 801,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-832 912.417,-832 912.417,4 -4,4"/>
 <!-- Симферополь -->
 <g id="node1" class="node"><title>Симферополь</title>
-<ellipse fill="none" stroke="black" cx="600" cy="-634" rx="64.0172" ry="18"/>
-<text text-anchor="middle" x="600" y="-630.3" font-family="Times,serif" font-size="14.00">Симферополь</text>
+<ellipse fill="none" stroke="black" cx="514" cy="-810" rx="64.0172" ry="18"/>
+<text text-anchor="middle" x="514" y="-806.3" font-family="Times,serif" font-size="14.00">Симферополь</text>
 </g>
 <!-- Харьков -->
 <g id="node2" class="node"><title>Харьков</title>
-<ellipse fill="none" stroke="black" cx="600" cy="-546" rx="43.319" ry="18"/>
-<text text-anchor="middle" x="600" y="-542.3" font-family="Times,serif" font-size="14.00">Харьков</text>
+<ellipse fill="none" stroke="black" cx="514" cy="-722" rx="43.319" ry="18"/>
+<text text-anchor="middle" x="514" y="-718.3" font-family="Times,serif" font-size="14.00">Харьков</text>
 </g>
 <!-- Симферополь&#45;&gt;Харьков -->
 <g id="edge1" class="edge"><title>Симферополь&#45;&gt;Харьков</title>
-<path fill="none" stroke="black" d="M600,-615.597C600,-603.746 600,-587.817 600,-574.292"/>
-<polygon fill="black" stroke="black" points="603.5,-574.084 600,-564.084 596.5,-574.084 603.5,-574.084"/>
-<text text-anchor="middle" x="604" y="-586.3" font-family="Times,serif" font-size="14.00">1</text>
+<path fill="none" stroke="black" d="M514,-791.597C514,-779.746 514,-763.817 514,-750.292"/>
+<polygon fill="black" stroke="black" points="517.5,-750.084 514,-740.084 510.5,-750.084 517.5,-750.084"/>
+<text text-anchor="middle" x="518" y="-762.3" font-family="Times,serif" font-size="14.00">1</text>
 </g>
 <!-- Киев -->
 <g id="node3" class="node"><title>Киев</title>
-<ellipse fill="none" stroke="black" cx="600" cy="-458" rx="29.3479" ry="18"/>
-<text text-anchor="middle" x="600" y="-454.3" font-family="Times,serif" font-size="14.00">Киев</text>
+<ellipse fill="none" stroke="black" cx="514" cy="-634" rx="29.3479" ry="18"/>
+<text text-anchor="middle" x="514" y="-630.3" font-family="Times,serif" font-size="14.00">Киев</text>
 </g>
 <!-- Харьков&#45;&gt;Киев -->
 <g id="edge2" class="edge"><title>Харьков&#45;&gt;Киев</title>
-<path fill="none" stroke="black" d="M600,-527.597C600,-515.746 600,-499.817 600,-486.292"/>
-<polygon fill="black" stroke="black" points="603.5,-486.084 600,-476.084 596.5,-486.084 603.5,-486.084"/>
-<text text-anchor="middle" x="604" y="-498.3" font-family="Times,serif" font-size="14.00">2</text>
+<path fill="none" stroke="black" d="M514,-703.597C514,-691.746 514,-675.817 514,-662.292"/>
+<polygon fill="black" stroke="black" points="517.5,-662.084 514,-652.084 510.5,-662.084 517.5,-662.084"/>
+<text text-anchor="middle" x="518" y="-674.3" font-family="Times,serif" font-size="14.00">2</text>
 </g>
 <!-- Житомир -->
 <g id="node4" class="node"><title>Житомир</title>
-<ellipse fill="none" stroke="black" cx="545" cy="-370" rx="47.169" ry="18"/>
-<text text-anchor="middle" x="545" y="-366.3" font-family="Times,serif" font-size="14.00">Житомир</text>
+<ellipse fill="none" stroke="black" cx="460" cy="-546" rx="47.169" ry="18"/>
+<text text-anchor="middle" x="460" y="-542.3" font-family="Times,serif" font-size="14.00">Житомир</text>
 </g>
 <!-- Киев&#45;&gt;Житомир -->
 <g id="edge3" class="edge"><title>Киев&#45;&gt;Житомир</title>
-<path fill="none" stroke="black" d="M589.655,-440.824C581.615,-428.252 570.318,-410.588 561.098,-396.172"/>
-<polygon fill="black" stroke="black" points="564.01,-394.229 555.674,-387.69 558.113,-398 564.01,-394.229"/>
-<text text-anchor="middle" x="582" y="-410.3" font-family="Times,serif" font-size="14.00">3</text>
+<path fill="none" stroke="black" d="M503.843,-616.824C495.949,-604.252 484.857,-586.588 475.805,-572.172"/>
+<polygon fill="black" stroke="black" points="478.762,-570.298 470.48,-563.69 472.833,-574.02 478.762,-570.298"/>
+<text text-anchor="middle" x="496" y="-586.3" font-family="Times,serif" font-size="14.00">3</text>
 </g>
 <!-- Кишинев -->
 <g id="node5" class="node"><title>Кишинев</title>
-<ellipse fill="none" stroke="black" cx="657" cy="-370" rx="46.2191" ry="18"/>
-<text text-anchor="middle" x="657" y="-366.3" font-family="Times,serif" font-size="14.00">Кишинев</text>
+<ellipse fill="none" stroke="black" cx="572" cy="-546" rx="46.2191" ry="18"/>
+<text text-anchor="middle" x="572" y="-542.3" font-family="Times,serif" font-size="14.00">Кишинев</text>
 </g>
 <!-- Киев&#45;&gt;Кишинев -->
 <g id="edge4" class="edge"><title>Киев&#45;&gt;Кишинев</title>
-<path fill="none" stroke="black" d="M610.721,-440.824C619.054,-428.252 630.762,-410.588 640.316,-396.172"/>
-<polygon fill="black" stroke="black" points="643.331,-397.959 645.938,-387.69 637.496,-394.092 643.331,-397.959"/>
-<text text-anchor="middle" x="638" y="-410.3" font-family="Times,serif" font-size="14.00">4</text>
+<path fill="none" stroke="black" d="M524.909,-616.824C533.388,-604.252 545.301,-586.588 555.024,-572.172"/>
+<polygon fill="black" stroke="black" points="558.054,-573.938 560.744,-563.69 552.251,-570.024 558.054,-573.938"/>
+<text text-anchor="middle" x="553" y="-586.3" font-family="Times,serif" font-size="14.00">4</text>
 </g>
 <!-- Вильнюс -->
 <g id="node6" class="node"><title>Вильнюс</title>
-<ellipse fill="none" stroke="black" cx="288" cy="-370" rx="45.244" ry="18"/>
-<text text-anchor="middle" x="288" y="-366.3" font-family="Times,serif" font-size="14.00">Вильнюс</text>
+<ellipse fill="none" stroke="black" cx="265" cy="-458" rx="45.244" ry="18"/>
+<text text-anchor="middle" x="265" y="-454.3" font-family="Times,serif" font-size="14.00">Вильнюс</text>
 </g>
 <!-- Киев&#45;&gt;Вильнюс -->
 <g id="edge5" class="edge"><title>Киев&#45;&gt;Вильнюс</title>
-<path fill="none" stroke="black" d="M573.668,-449.742C520.567,-435.105 400.073,-401.892 333.801,-383.625"/>
-<polygon fill="black" stroke="black" points="334.611,-380.217 324.04,-380.934 332.751,-386.966 334.611,-380.217"/>
-<text text-anchor="middle" x="476" y="-410.3" font-family="Times,serif" font-size="14.00">5</text>
+<path fill="none" stroke="black" d="M492.1,-621.453C467.958,-608.438 428.264,-586.187 396,-564 357.859,-537.772 316.625,-503.676 290.814,-481.569"/>
+<polygon fill="black" stroke="black" points="292.861,-478.712 283,-474.837 288.292,-484.016 292.861,-478.712"/>
+<text text-anchor="middle" x="400" y="-542.3" font-family="Times,serif" font-size="14.00">5</text>
 </g>
 <!-- Одесса -->
 <g id="node7" class="node"><title>Одесса</title>
-<ellipse fill="none" stroke="black" cx="759" cy="-370" rx="37.5442" ry="18"/>
-<text text-anchor="middle" x="759" y="-366.3" font-family="Times,serif" font-size="14.00">Одесса</text>
+<ellipse fill="none" stroke="black" cx="674" cy="-546" rx="37.5442" ry="18"/>
+<text text-anchor="middle" x="674" y="-542.3" font-family="Times,serif" font-size="14.00">Одесса</text>
 </g>
 <!-- Киев&#45;&gt;Одесса -->
 <g id="edge6" class="edge"><title>Киев&#45;&gt;Одесса</title>
-<path fill="none" stroke="black" d="M621.443,-445.402C648.369,-430.838 694.83,-405.708 726.224,-388.728"/>
-<polygon fill="black" stroke="black" points="727.916,-391.792 735.047,-383.956 724.586,-385.635 727.916,-391.792"/>
-<text text-anchor="middle" x="698" y="-410.3" font-family="Times,serif" font-size="14.00">6</text>
+<path fill="none" stroke="black" d="M535.578,-621.402C562.673,-606.838 609.427,-581.708 641.018,-564.728"/>
+<polygon fill="black" stroke="black" points="642.745,-567.773 649.896,-559.956 639.431,-561.607 642.745,-567.773"/>
+<text text-anchor="middle" x="613" y="-586.3" font-family="Times,serif" font-size="14.00">6</text>
 </g>
 <!-- Волгоград -->
 <g id="node8" class="node"><title>Волгоград</title>
-<ellipse fill="none" stroke="black" cx="547" cy="-282" rx="50.0684" ry="18"/>
-<text text-anchor="middle" x="547" y="-278.3" font-family="Times,serif" font-size="14.00">Волгоград</text>
+<ellipse fill="none" stroke="black" cx="452" cy="-458" rx="50.0684" ry="18"/>
+<text text-anchor="middle" x="452" y="-454.3" font-family="Times,serif" font-size="14.00">Волгоград</text>
 </g>
 <!-- Житомир&#45;&gt;Волгоград -->
 <g id="edge7" class="edge"><title>Житомир&#45;&gt;Волгоград</title>
-<path fill="none" stroke="black" d="M545.405,-351.597C545.68,-339.746 546.051,-323.817 546.365,-310.292"/>
-<polygon fill="black" stroke="black" points="549.869,-310.163 546.603,-300.084 542.871,-310 549.869,-310.163"/>
-<text text-anchor="middle" x="551" y="-322.3" font-family="Times,serif" font-size="14.00">7</text>
+<path fill="none" stroke="black" d="M458.419,-528.009C457.32,-516.19 455.83,-500.171 454.562,-486.542"/>
+<polygon fill="black" stroke="black" points="458.016,-485.883 453.605,-476.25 451.046,-486.531 458.016,-485.883"/>
+<text text-anchor="middle" x="461" y="-498.3" font-family="Times,serif" font-size="14.00">7</text>
 </g>
 <!-- Донецк -->
 <g id="node9" class="node"><title>Донецк</title>
-<ellipse fill="none" stroke="black" cx="655" cy="-282" rx="38.4949" ry="18"/>
-<text text-anchor="middle" x="655" y="-278.3" font-family="Times,serif" font-size="14.00">Донецк</text>
+<ellipse fill="none" stroke="black" cx="602" cy="-458" rx="38.4949" ry="18"/>
+<text text-anchor="middle" x="602" y="-454.3" font-family="Times,serif" font-size="14.00">Донецк</text>
 </g>
 <!-- Житомир&#45;&gt;Донецк -->
 <g id="edge8" class="edge"><title>Житомир&#45;&gt;Донецк</title>
-<path fill="none" stroke="black" d="M564.666,-353.625C582.293,-339.843 608.318,-319.497 627.912,-304.178"/>
-<polygon fill="black" stroke="black" points="630.15,-306.871 635.873,-297.954 625.839,-301.356 630.15,-306.871"/>
-<text text-anchor="middle" x="614" y="-322.3" font-family="Times,serif" font-size="14.00">8</text>
+<path fill="none" stroke="black" d="M484.088,-530.411C507.871,-516.008 544.365,-493.906 570.45,-478.108"/>
+<polygon fill="black" stroke="black" points="572.464,-480.98 579.205,-472.805 568.838,-474.992 572.464,-480.98"/>
+<text text-anchor="middle" x="548" y="-498.3" font-family="Times,serif" font-size="14.00">8</text>
 </g>
 <!-- Кишинев&#45;&gt;Донецк -->
 <g id="edge9" class="edge"><title>Кишинев&#45;&gt;Донецк</title>
-<path fill="none" stroke="black" d="M656.595,-351.597C656.32,-339.746 655.949,-323.817 655.635,-310.292"/>
-<polygon fill="black" stroke="black" points="659.129,-310 655.397,-300.084 652.131,-310.163 659.129,-310"/>
-<text text-anchor="middle" x="661" y="-322.3" font-family="Times,serif" font-size="14.00">9</text>
+<path fill="none" stroke="black" d="M577.927,-528.009C582.159,-515.877 587.935,-499.32 592.768,-485.465"/>
+<polygon fill="black" stroke="black" points="596.096,-486.55 596.085,-475.956 589.487,-484.245 596.096,-486.55"/>
+<text text-anchor="middle" x="594" y="-498.3" font-family="Times,serif" font-size="14.00">9</text>
 </g>
 <!-- Витебск -->
 <g id="node10" class="node"><title>Витебск</title>
-<ellipse fill="none" stroke="black" cx="389" cy="-194" rx="42.3456" ry="18"/>
-<text text-anchor="middle" x="389" y="-190.3" font-family="Times,serif" font-size="14.00">Витебск</text>
+<ellipse fill="none" stroke="black" cx="373" cy="-370" rx="42.3456" ry="18"/>
+<text text-anchor="middle" x="373" y="-366.3" font-family="Times,serif" font-size="14.00">Витебск</text>
 </g>
 <!-- Вильнюс&#45;&gt;Витебск -->
 <g id="edge10" class="edge"><title>Вильнюс&#45;&gt;Витебск</title>
-<path fill="none" stroke="black" d="M296.723,-352.066C307.61,-331.141 326.993,-294.558 345,-264 353.732,-249.182 364.046,-232.948 372.492,-219.951"/>
-<polygon fill="black" stroke="black" points="375.456,-221.813 377.998,-211.527 369.597,-217.983 375.456,-221.813"/>
-<text text-anchor="middle" x="352.5" y="-278.3" font-family="Times,serif" font-size="14.00">10</text>
+<path fill="none" stroke="black" d="M284.779,-441.749C292.654,-435.643 301.782,-428.521 310,-422 322.064,-412.427 335.326,-401.719 346.558,-392.595"/>
+<polygon fill="black" stroke="black" points="348.783,-395.297 354.331,-386.271 344.366,-389.867 348.783,-395.297"/>
+<text text-anchor="middle" x="337.5" y="-410.3" font-family="Times,serif" font-size="14.00">10</text>
 </g>
 <!-- Даугавпилс -->
 <g id="node11" class="node"><title>Даугавпилс</title>
-<ellipse fill="none" stroke="black" cx="424" cy="-282" rx="55.3682" ry="18"/>
-<text text-anchor="middle" x="424" y="-278.3" font-family="Times,serif" font-size="14.00">Даугавпилс</text>
+<ellipse fill="none" stroke="black" cx="150" cy="-370" rx="55.3682" ry="18"/>
+<text text-anchor="middle" x="150" y="-366.3" font-family="Times,serif" font-size="14.00">Даугавпилс</text>
 </g>
 <!-- Вильнюс&#45;&gt;Даугавпилс -->
 <g id="edge11" class="edge"><title>Вильнюс&#45;&gt;Даугавпилс</title>
-<path fill="none" stroke="black" d="M313.942,-355.034C325.164,-348.819 338.366,-341.273 350,-334 364.76,-324.773 380.709,-313.903 394.008,-304.573"/>
-<polygon fill="black" stroke="black" points="396.177,-307.327 402.325,-298.698 392.138,-301.609 396.177,-307.327"/>
-<text text-anchor="middle" x="380.5" y="-322.3" font-family="Times,serif" font-size="14.00">11</text>
+<path fill="none" stroke="black" d="M238.024,-443.316C227.096,-437.321 214.586,-429.863 204,-422 193.163,-413.95 182.159,-403.956 172.937,-394.953"/>
+<polygon fill="black" stroke="black" points="175.204,-392.271 165.652,-387.688 170.261,-397.228 175.204,-392.271"/>
+<text text-anchor="middle" x="211.5" y="-410.3" font-family="Times,serif" font-size="14.00">11</text>
 </g>
 <!-- Каунас -->
 <g id="node12" class="node"><title>Каунас</title>
-<ellipse fill="none" stroke="black" cx="38" cy="-282" rx="38.0212" ry="18"/>
-<text text-anchor="middle" x="38" y="-278.3" font-family="Times,serif" font-size="14.00">Каунас</text>
+<ellipse fill="none" stroke="black" cx="38" cy="-370" rx="38.0212" ry="18"/>
+<text text-anchor="middle" x="38" y="-366.3" font-family="Times,serif" font-size="14.00">Каунас</text>
 </g>
 <!-- Вильнюс&#45;&gt;Каунас -->
 <g id="edge12" class="edge"><title>Вильнюс&#45;&gt;Каунас</title>
-<path fill="none" stroke="black" d="M252.715,-358.626C230.346,-351.912 200.856,-342.809 175,-334 141.302,-322.519 103.4,-308.308 76.0186,-297.805"/>
-<polygon fill="black" stroke="black" points="77.0239,-294.442 66.4341,-294.115 74.509,-300.974 77.0239,-294.442"/>
-<text text-anchor="middle" x="182.5" y="-322.3" font-family="Times,serif" font-size="14.00">12</text>
+<path fill="none" stroke="black" d="M231.785,-445.448C212.762,-438.754 188.475,-430.077 167,-422 136.02,-410.347 101.122,-396.507 75.4425,-386.186"/>
+<polygon fill="black" stroke="black" points="76.663,-382.904 66.0795,-382.415 74.0477,-389.398 76.663,-382.904"/>
+<text text-anchor="middle" x="174.5" y="-410.3" font-family="Times,serif" font-size="14.00">12</text>
 </g>
 <!-- Брест -->
 <g id="node13" class="node"><title>Брест</title>
-<ellipse fill="none" stroke="black" cx="128" cy="-282" rx="33.1991" ry="18"/>
-<text text-anchor="middle" x="128" y="-278.3" font-family="Times,serif" font-size="14.00">Брест</text>
+<ellipse fill="none" stroke="black" cx="333" cy="-282" rx="33.1991" ry="18"/>
+<text text-anchor="middle" x="333" y="-278.3" font-family="Times,serif" font-size="14.00">Брест</text>
 </g>
 <!-- Вильнюс&#45;&gt;Брест -->
 <g id="edge13" class="edge"><title>Вильнюс&#45;&gt;Брест</title>
-<path fill="none" stroke="black" d="M262.293,-355.183C234.354,-340.165 189.687,-316.157 159.62,-299.996"/>
-<polygon fill="black" stroke="black" points="161.258,-296.903 150.793,-295.251 157.944,-303.068 161.258,-296.903"/>
-<text text-anchor="middle" x="230.5" y="-322.3" font-family="Times,serif" font-size="14.00">13</text>
+<path fill="none" stroke="black" d="M271.672,-439.903C279.782,-419.121 293.888,-382.985 306,-352 311.506,-337.914 317.65,-322.213 322.684,-309.351"/>
+<polygon fill="black" stroke="black" points="326.064,-310.318 326.45,-299.73 319.545,-307.766 326.064,-310.318"/>
+<text text-anchor="middle" x="313.5" y="-366.3" font-family="Times,serif" font-size="14.00">13</text>
 </g>
 <!-- Калининград -->
 <g id="node14" class="node"><title>Калининград</title>
-<ellipse fill="none" stroke="black" cx="240" cy="-282" rx="60.1672" ry="18"/>
-<text text-anchor="middle" x="240" y="-278.3" font-family="Times,serif" font-size="14.00">Калининград</text>
+<ellipse fill="none" stroke="black" cx="359" cy="-194" rx="60.1672" ry="18"/>
+<text text-anchor="middle" x="359" y="-190.3" font-family="Times,serif" font-size="14.00">Калининград</text>
 </g>
 <!-- Вильнюс&#45;&gt;Калининград -->
 <g id="edge14" class="edge"><title>Вильнюс&#45;&gt;Калининград</title>
-<path fill="none" stroke="black" d="M278.517,-352.009C271.68,-339.759 262.324,-322.998 254.546,-309.062"/>
-<polygon fill="black" stroke="black" points="257.393,-306.982 249.464,-299.956 251.281,-310.393 257.393,-306.982"/>
-<text text-anchor="middle" x="276.5" y="-322.3" font-family="Times,serif" font-size="14.00">14</text>
+<path fill="none" stroke="black" d="M259.58,-439.98C247.784,-399.4 224.332,-295.47 270,-230 277.05,-219.893 287.493,-212.705 298.768,-207.592"/>
+<polygon fill="black" stroke="black" points="300.383,-210.717 308.38,-203.767 297.794,-204.213 300.383,-210.717"/>
+<text text-anchor="middle" x="251.5" y="-322.3" font-family="Times,serif" font-size="14.00">14</text>
 </g>
 <!-- Волгоград&#45;&gt;Витебск -->
 <g id="edge16" class="edge"><title>Волгоград&#45;&gt;Витебск</title>
-<path fill="none" stroke="black" d="M520.554,-266.606C493.761,-252.022 452.207,-229.404 422.986,-213.499"/>
-<polygon fill="black" stroke="black" points="424.423,-210.296 413.966,-208.589 421.076,-216.444 424.423,-210.296"/>
-<text text-anchor="middle" x="490.5" y="-234.3" font-family="Times,serif" font-size="14.00">16</text>
+<path fill="none" stroke="black" d="M436.768,-440.418C424.813,-427.404 408.017,-409.12 394.663,-394.583"/>
+<polygon fill="black" stroke="black" points="396.994,-391.946 387.651,-386.949 391.839,-396.681 396.994,-391.946"/>
+<text text-anchor="middle" x="427.5" y="-410.3" font-family="Times,serif" font-size="14.00">16</text>
 </g>
 <!-- Воронеж -->
 <g id="node15" class="node"><title>Воронеж</title>
-<ellipse fill="none" stroke="black" cx="547" cy="-194" rx="45.244" ry="18"/>
-<text text-anchor="middle" x="547" y="-190.3" font-family="Times,serif" font-size="14.00">Воронеж</text>
+<ellipse fill="none" stroke="black" cx="430" cy="-282" rx="45.244" ry="18"/>
+<text text-anchor="middle" x="430" y="-278.3" font-family="Times,serif" font-size="14.00">Воронеж</text>
 </g>
 <!-- Волгоград&#45;&gt;Воронеж -->
 <g id="edge15" class="edge"><title>Волгоград&#45;&gt;Воронеж</title>
-<path fill="none" stroke="black" d="M547,-263.597C547,-251.746 547,-235.817 547,-222.292"/>
-<polygon fill="black" stroke="black" points="550.5,-222.084 547,-212.084 543.5,-222.084 550.5,-222.084"/>
-<text text-anchor="middle" x="554.5" y="-234.3" font-family="Times,serif" font-size="14.00">15</text>
+<path fill="none" stroke="black" d="M450.958,-439.791C449.206,-413.438 445.144,-361.56 438,-318 437.561,-315.324 437.041,-312.547 436.479,-309.781"/>
+<polygon fill="black" stroke="black" points="439.896,-309.024 434.334,-300.006 433.058,-310.524 439.896,-309.024"/>
+<text text-anchor="middle" x="454.5" y="-366.3" font-family="Times,serif" font-size="14.00">15</text>
 </g>
 <!-- Москва -->
 <g id="node16" class="node"><title>Москва</title>
-<ellipse fill="none" stroke="black" cx="737" cy="-194" rx="39.9464" ry="18"/>
-<text text-anchor="middle" x="737" y="-190.3" font-family="Times,serif" font-size="14.00">Москва</text>
+<ellipse fill="none" stroke="black" cx="741" cy="-370" rx="39.9464" ry="18"/>
+<text text-anchor="middle" x="741" y="-366.3" font-family="Times,serif" font-size="14.00">Москва</text>
 </g>
 <!-- Донецк&#45;&gt;Москва -->
 <g id="edge17" class="edge"><title>Донецк&#45;&gt;Москва</title>
-<path fill="none" stroke="black" d="M670.04,-265.226C682.561,-252.095 700.568,-233.209 714.756,-218.329"/>
-<polygon fill="black" stroke="black" points="717.41,-220.618 721.778,-210.965 712.344,-215.787 717.41,-220.618"/>
-<text text-anchor="middle" x="711.5" y="-234.3" font-family="Times,serif" font-size="14.00">17</text>
+<path fill="none" stroke="black" d="M624.333,-443.183C647.399,-428.912 683.588,-406.521 709.545,-390.461"/>
+<polygon fill="black" stroke="black" points="711.598,-393.307 718.261,-385.069 707.915,-387.354 711.598,-393.307"/>
+<text text-anchor="middle" x="691.5" y="-410.3" font-family="Times,serif" font-size="14.00">17</text>
 </g>
 <!-- Орел -->
 <g id="node17" class="node"><title>Орел</title>
-<ellipse fill="none" stroke="black" cx="648" cy="-194" rx="30.3206" ry="18"/>
-<text text-anchor="middle" x="648" y="-190.3" font-family="Times,serif" font-size="14.00">Орел</text>
+<ellipse fill="none" stroke="black" cx="677" cy="-282" rx="30.3206" ry="18"/>
+<text text-anchor="middle" x="677" y="-278.3" font-family="Times,serif" font-size="14.00">Орел</text>
 </g>
 <!-- Донецк&#45;&gt;Орел -->
 <g id="edge18" class="edge"><title>Донецк&#45;&gt;Орел</title>
-<path fill="none" stroke="black" d="M653.617,-264.009C652.655,-252.19 651.351,-236.171 650.242,-222.542"/>
-<polygon fill="black" stroke="black" points="653.704,-221.933 649.404,-212.25 646.727,-222.501 653.704,-221.933"/>
-<text text-anchor="middle" x="660.5" y="-234.3" font-family="Times,serif" font-size="14.00">18</text>
+<path fill="none" stroke="black" d="M601.838,-439.755C602.353,-411.982 606.658,-356.566 631,-318 635.124,-311.466 640.929,-305.696 647.03,-300.822"/>
+<polygon fill="black" stroke="black" points="649.368,-303.45 655.404,-294.742 645.256,-297.785 649.368,-303.45"/>
+<text text-anchor="middle" x="623.5" y="-366.3" font-family="Times,serif" font-size="14.00">18</text>
+</g>
+<!-- Витебск&#45;&gt;Брест -->
+<g id="edge21" class="edge"><title>Витебск&#45;&gt;Брест</title>
+<path fill="none" stroke="black" d="M353.852,-353.68C348.148,-348.102 342.493,-341.344 339,-334 335.538,-326.723 333.773,-318.226 332.938,-310.279"/>
+<polygon fill="black" stroke="black" points="336.431,-310.057 332.312,-300.296 329.445,-310.496 336.431,-310.057"/>
+<text text-anchor="middle" x="346.5" y="-322.3" font-family="Times,serif" font-size="14.00">21</text>
+</g>
+<!-- Витебск&#45;&gt;Воронеж -->
+<g id="edge20" class="edge"><title>Витебск&#45;&gt;Воронеж</title>
+<path fill="none" stroke="black" d="M372.868,-351.783C373.522,-341.314 375.719,-328.07 382,-318 385.51,-312.372 390.286,-307.363 395.471,-303.017"/>
+<polygon fill="black" stroke="black" points="397.935,-305.543 403.83,-296.74 393.732,-299.946 397.935,-305.543"/>
+<text text-anchor="middle" x="389.5" y="-322.3" font-family="Times,serif" font-size="14.00">20</text>
+</g>
+<!-- Витебск&#45;&gt;Орел -->
+<g id="edge23" class="edge"><title>Витебск&#45;&gt;Орел</title>
+<path fill="none" stroke="black" d="M406.379,-358.752C414.114,-356.459 422.328,-354.089 430,-352 475.764,-339.541 592.056,-315.153 637,-300 639.377,-299.198 641.812,-298.318 644.249,-297.394"/>
+<polygon fill="black" stroke="black" points="645.557,-300.64 653.543,-293.677 642.958,-294.14 645.557,-300.64"/>
+<text text-anchor="middle" x="575.5" y="-322.3" font-family="Times,serif" font-size="14.00">23</text>
 </g>
 <!-- С.Петербург -->
 <g id="node18" class="node"><title>С.Петербург</title>
-<ellipse fill="none" stroke="black" cx="389" cy="-106" rx="59.1941" ry="18"/>
-<text text-anchor="middle" x="389" y="-102.3" font-family="Times,serif" font-size="14.00">С.Петербург</text>
+<ellipse fill="none" stroke="black" cx="359" cy="-106" rx="59.1941" ry="18"/>
+<text text-anchor="middle" x="359" y="-102.3" font-family="Times,serif" font-size="14.00">С.Петербург</text>
 </g>
 <!-- Витебск&#45;&gt;С.Петербург -->
 <g id="edge19" class="edge"><title>Витебск&#45;&gt;С.Петербург</title>
-<path fill="none" stroke="black" d="M389,-175.597C389,-163.746 389,-147.817 389,-134.292"/>
-<polygon fill="black" stroke="black" points="392.5,-134.084 389,-124.084 385.5,-134.084 392.5,-134.084"/>
-<text text-anchor="middle" x="396.5" y="-146.3" font-family="Times,serif" font-size="14.00">19</text>
+<path fill="none" stroke="black" d="M347.035,-355.688C327.329,-343.988 301.699,-324.938 290,-300 266.595,-250.106 268.91,-226.916 290,-176 297.768,-157.248 313.378,-140.934 327.789,-128.884"/>
+<polygon fill="black" stroke="black" points="329.981,-131.613 335.614,-122.64 325.615,-126.142 329.981,-131.613"/>
+<text text-anchor="middle" x="281.5" y="-234.3" font-family="Times,serif" font-size="14.00">19</text>
+</g>
+<!-- Ниж.Новгород -->
+<g id="node19" class="node"><title>Ниж.Новгород</title>
+<ellipse fill="none" stroke="black" cx="561" cy="-282" rx="67.3907" ry="18"/>
+<text text-anchor="middle" x="561" y="-278.3" font-family="Times,serif" font-size="14.00">Ниж.Новгород</text>
+</g>
+<!-- Витебск&#45;&gt;Ниж.Новгород -->
+<g id="edge22" class="edge"><title>Витебск&#45;&gt;Ниж.Новгород</title>
+<path fill="none" stroke="black" d="M400.74,-356.31C431.962,-342.028 483.028,-318.668 519.114,-302.161"/>
+<polygon fill="black" stroke="black" points="520.766,-305.254 528.404,-297.911 517.854,-298.888 520.766,-305.254"/>
+<text text-anchor="middle" x="491.5" y="-322.3" font-family="Times,serif" font-size="14.00">22</text>
+</g>
+<!-- Рига -->
+<g id="node20" class="node"><title>Рига</title>
+<ellipse fill="none" stroke="black" cx="38" cy="-282" rx="27.4223" ry="18"/>
+<text text-anchor="middle" x="38" y="-278.3" font-family="Times,serif" font-size="14.00">Рига</text>
+</g>
+<!-- Каунас&#45;&gt;Рига -->
+<g id="edge24" class="edge"><title>Каунас&#45;&gt;Рига</title>
+<path fill="none" stroke="black" d="M38,-351.597C38,-339.746 38,-323.817 38,-310.292"/>
+<polygon fill="black" stroke="black" points="41.5001,-310.084 38,-300.084 34.5001,-310.084 41.5001,-310.084"/>
+<text text-anchor="middle" x="45.5" y="-322.3" font-family="Times,serif" font-size="14.00">24</text>
+</g>
+<!-- Брест&#45;&gt;Калининград -->
+<g id="edge25" class="edge"><title>Брест&#45;&gt;Калининград</title>
+<path fill="none" stroke="black" d="M338.137,-264.009C341.769,-251.995 346.713,-235.641 350.877,-221.869"/>
+<polygon fill="black" stroke="black" points="354.33,-222.541 353.874,-211.956 347.63,-220.515 354.33,-222.541"/>
+<text text-anchor="middle" x="356.5" y="-234.3" font-family="Times,serif" font-size="14.00">25</text>
+</g>
+<!-- Калининград&#45;&gt;С.Петербург -->
+<g id="edge26" class="edge"><title>Калининград&#45;&gt;С.Петербург</title>
+<path fill="none" stroke="black" d="M359,-175.597C359,-163.746 359,-147.817 359,-134.292"/>
+<polygon fill="black" stroke="black" points="362.5,-134.084 359,-124.084 355.5,-134.084 362.5,-134.084"/>
+<text text-anchor="middle" x="366.5" y="-146.3" font-family="Times,serif" font-size="14.00">26</text>
+</g>
+<!-- Ярославль -->
+<g id="node21" class="node"><title>Ярославль</title>
+<ellipse fill="none" stroke="black" cx="489" cy="-194" rx="51.0191" ry="18"/>
+<text text-anchor="middle" x="489" y="-190.3" font-family="Times,serif" font-size="14.00">Ярославль</text>
+</g>
+<!-- Воронеж&#45;&gt;Ярославль -->
+<g id="edge27" class="edge"><title>Воронеж&#45;&gt;Ярославль</title>
+<path fill="none" stroke="black" d="M441.376,-264.418C449.972,-251.888 461.921,-234.471 471.699,-220.218"/>
+<polygon fill="black" stroke="black" points="474.687,-222.05 477.458,-211.824 468.915,-218.09 474.687,-222.05"/>
+<text text-anchor="middle" x="472.5" y="-234.3" font-family="Times,serif" font-size="14.00">27</text>
+</g>
+<!-- Москва&#45;&gt;Орел -->
+<g id="edge28" class="edge"><title>Москва&#45;&gt;Орел</title>
+<path fill="none" stroke="black" d="M728.962,-352.824C719.337,-339.89 705.699,-321.564 694.81,-306.932"/>
+<polygon fill="black" stroke="black" points="697.546,-304.746 688.768,-298.813 691.93,-308.925 697.546,-304.746"/>
+<text text-anchor="middle" x="722.5" y="-322.3" font-family="Times,serif" font-size="14.00">28</text>
+</g>
+<!-- Москва&#45;&gt;С.Петербург -->
+<g id="edge30" class="edge"><title>Москва&#45;&gt;С.Петербург</title>
+<path fill="none" stroke="black" d="M776.601,-361.236C834.091,-347.045 937.348,-313.727 900,-264 842.102,-186.911 552.494,-135.44 422.425,-115.852"/>
+<polygon fill="black" stroke="black" points="422.623,-112.343 412.216,-114.331 421.591,-119.266 422.623,-112.343"/>
+<text text-anchor="middle" x="887.5" y="-234.3" font-family="Times,serif" font-size="14.00">30</text>
+</g>
+<!-- Москва&#45;&gt;Ниж.Новгород -->
+<g id="edge31" class="edge"><title>Москва&#45;&gt;Ниж.Новгород</title>
+<path fill="none" stroke="black" d="M714.44,-356.31C684.763,-342.131 636.361,-319.006 601.857,-302.521"/>
+<polygon fill="black" stroke="black" points="603.053,-299.213 592.521,-298.06 600.035,-305.529 603.053,-299.213"/>
+<text text-anchor="middle" x="675.5" y="-322.3" font-family="Times,serif" font-size="14.00">31</text>
+</g>
+<!-- Казань -->
+<g id="node22" class="node"><title>Казань</title>
+<ellipse fill="none" stroke="black" cx="763" cy="-282" rx="37.5442" ry="18"/>
+<text text-anchor="middle" x="763" y="-278.3" font-family="Times,serif" font-size="14.00">Казань</text>
+</g>
+<!-- Москва&#45;&gt;Казань -->
+<g id="edge29" class="edge"><title>Москва&#45;&gt;Казань</title>
+<path fill="none" stroke="black" d="M745.346,-352.009C748.42,-339.995 752.603,-323.641 756.127,-309.869"/>
+<polygon fill="black" stroke="black" points="759.575,-310.511 758.663,-299.956 752.793,-308.776 759.575,-310.511"/>
+<text text-anchor="middle" x="761.5" y="-322.3" font-family="Times,serif" font-size="14.00">29</text>
+</g>
+<!-- Минск -->
+<g id="node23" class="node"><title>Минск</title>
+<ellipse fill="none" stroke="black" cx="855" cy="-282" rx="36.096" ry="18"/>
+<text text-anchor="middle" x="855" y="-278.3" font-family="Times,serif" font-size="14.00">Минск</text>
+</g>
+<!-- Москва&#45;&gt;Минск -->
+<g id="edge32" class="edge"><title>Москва&#45;&gt;Минск</title>
+<path fill="none" stroke="black" d="M760.597,-354.216C779.061,-340.287 806.9,-319.286 827.568,-303.695"/>
+<polygon fill="black" stroke="black" points="829.783,-306.408 835.658,-297.591 825.567,-300.819 829.783,-306.408"/>
+<text text-anchor="middle" x="816.5" y="-322.3" font-family="Times,serif" font-size="14.00">32</text>
 </g>
 <!-- Мурманск -->
-<g id="node19" class="node"><title>Мурманск</title>
-<ellipse fill="none" stroke="black" cx="389" cy="-18" rx="50.5427" ry="18"/>
-<text text-anchor="middle" x="389" y="-14.3" font-family="Times,serif" font-size="14.00">Мурманск</text>
+<g id="node24" class="node"><title>Мурманск</title>
+<ellipse fill="none" stroke="black" cx="359" cy="-18" rx="50.5427" ry="18"/>
+<text text-anchor="middle" x="359" y="-14.3" font-family="Times,serif" font-size="14.00">Мурманск</text>
 </g>
 <!-- С.Петербург&#45;&gt;Мурманск -->
-<g id="edge20" class="edge"><title>С.Петербург&#45;&gt;Мурманск</title>
-<path fill="none" stroke="black" d="M389,-87.5966C389,-75.7459 389,-59.8169 389,-46.2917"/>
-<polygon fill="black" stroke="black" points="392.5,-46.084 389,-36.084 385.5,-46.084 392.5,-46.084"/>
-<text text-anchor="middle" x="396.5" y="-58.3" font-family="Times,serif" font-size="14.00">20</text>
+<g id="edge33" class="edge"><title>С.Петербург&#45;&gt;Мурманск</title>
+<path fill="none" stroke="black" d="M359,-87.5966C359,-75.7459 359,-59.8169 359,-46.2917"/>
+<polygon fill="black" stroke="black" points="362.5,-46.084 359,-36.084 355.5,-46.084 362.5,-46.084"/>
+<text text-anchor="middle" x="366.5" y="-58.3" font-family="Times,serif" font-size="14.00">33</text>
 </g>
 </g>
 </svg>
