@@ -7,7 +7,7 @@
          {
             "appID":"348HV3VZEQ.com.naviworld.Navimap",
             "paths":[
-               "????/*"
+               "[0-9]+/[0-9]+"
             ]
          }
       ]
